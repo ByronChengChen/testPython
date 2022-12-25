@@ -1,4 +1,6 @@
 import filetype
+import os
+import sys
 from enum import Enum
 
 class HnbFileType(Enum):
@@ -9,12 +11,12 @@ class HnbFileType(Enum):
 def getFileType(fileFullPath):
     kind = filetype.guess(fileFullPath)
     if kind is None:
-        print(fileFullPath + " unknow")
+        print("srcFile:" + __file__ + ",line:" + str(sys._getframe().f_lineno) + "\n" + fileFullPath + " unknow")
     else:
         mimeType = kind.mime
         if "video" in mimeType:
             return HnbFileType.HnbV
-        elif "jpeg" in mimeType:
+        elif "image" in mimeType:
             return HnbFileType.HnbP
         else:
             return HnbFileType.HnbUnknow

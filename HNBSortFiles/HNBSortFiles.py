@@ -46,7 +46,7 @@ def sortFile(desPath):
                 dirVP = pPath
                 yearMonthVP = timeStr + "_p"
             else:
-                print(fileName + "unknow")
+                print("srcFile:" + __file__ + ",line:" + str(sys._getframe().f_lineno) + "\n" + fileName + " file unknow type")
                 continue
             newDir = os.path.join(dirVP,yearMonthVP)
             if(os.path.exists(newDir) is False):
