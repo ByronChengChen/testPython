@@ -20,6 +20,7 @@ def sortFile(desPath):
     if(desExists == False):
         exit
 
+
     vPath = os.path.join(desPath,"video")
     pPath = os.path.join(desPath,"picture")
     if os.path.exists(vPath) is False:
