@@ -14,6 +14,9 @@ from tabnanny import filename_only
 from tracemalloc import start
 import time
 import UseFileType
+from PIL import Image
+from PIL.ExifTags import TAGS
+from datetime import datetime
 
 def sortFile(desPath):
     desExists = os.path.exists(desPath)
@@ -30,10 +33,30 @@ def sortFile(desPath):
     for fileName in os.listdir(desPath):
         fileFullPath = os.path.join(desPath,fileName)
         if os.path.isfile(fileFullPath):
+            # if ".DS_Store" in fileFullPath :
+            #     continue
             fileSt = os.stat(fileFullPath)
             fileCtime = fileSt.st_birthtime
             timeArray = time.localtime(fileCtime)
             timeStr = time.strftime("%Y_%m",timeArray)
+
+            # 获取照片时间
+            try:
+                img = Image.open(fileFullPath)
+                exifinfo = img._getexif()
+                ret = {}
+                for tag, value in exifinfo.items():
+                    decoded = TAGS.get(tag, tag)
+                    ret[decoded] = value
+                dataOriginalTime = ret['DateTimeOriginal']
+                date_time = datetime.strptime(dataOriginalTime, "%Y:%m:%d %H:%M:%S")
+                month =  date_time.month
+                year = date_time.year
+                timeStr = "{}_{}".format(year,str(month).zfill(2))
+            except IOError:
+                print("该文件不是图片")
+            
+
 
             # 按文件类型生成新目录 path + video/picture + year_month + _p/_v
             dirVP = None
